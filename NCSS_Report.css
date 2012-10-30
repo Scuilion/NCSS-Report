@@ -1,7 +1,8 @@
 .dataTables_processing{
    visibility:visible;
 }
-
+thead tr th.header{
+}
 thead tr th.Name, table td.Name {
     width: 50%;
     white-space: nowrap;
@@ -20,4 +21,15 @@ thead tr th.JavaDoc, table td.JavaDoc {
 }
 .dataTables_wrapper{
     width:90%
+}
+
+#icon{
+   background:url('DataTables-1.9.3/examples/examples_support/themes/ui-lightness/images/ui-icons_228ef1_256x240.png') no-repeat right center; 
+   width:15px; 
+   height:15px; 
+   display:block;
+   background-position:-162px -113px;
+   float:left;
+    white-space: nowrap;
+   overflow: hidden;
 }
