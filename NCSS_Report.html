@@ -2,7 +2,7 @@
    <head>
       <title>NCSS Report</title>
       <meta charset="utf-8" />
-      <script type="text/javascript" language="javascript" src="jquery.js"></script>
+      <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.js"></script>
       <script type="text/javascript" language="javascript" src="filtering.js"></script>
       <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.dataTables.js"></script>
       <style type="text/css" title="currentStyle">
@@ -20,7 +20,7 @@
             $('#ncss_report').html( '<table id="report" cellpadding="5" cellspacing="1" border="1" style="table-layout:fixed;"></table>' );
             var oTable = $('#report').dataTable(
                   {  "aaData":[],
-                     "aoColumns":[{"sTitle":"Name", "sClass":"Name","sType":"string", "sWidth":"70%"},
+                     "aoColumns":[{"sTitle":"Name<div>tme</div>", "sClass":"Name","sType":"string", "sWidth":"70%"},
                                     {"sTitle":"NCSS", "sClass":"NCSS","sType":"numeric","sWidth":"10%" },
                                     {"sTitle":"CCN", "sClass":"CCN","sType":"numeric","sWidth":"10%"},
                                     {"sTitle":"JavaDocs", "sClass":"JavaDocs","sType":"numeric","sWidth":"10%"},
@@ -33,30 +33,6 @@
            $('#min').keyup( function() { oTable.fnDraw(); } );
            $('#max').keyup( function() { oTable.fnDraw(); } );
            addFiltering();
-/*$.fn.dataTableExt.afnFiltering.push(
-	function( oSettings, aData, iDataIndex ) {
-		var iMin = document.getElementById('min').value * 1;
-		var iMax = document.getElementById('max').value * 1;
-		var iVersion = aData[3] == "-" ? 0 : aData[3]*1;
-		if ( iMin == "" && iMax == "" )
-		{
-			return true;
-		}
-		else if ( iMin == "" && iVersion < iMax )
-		{
-			return true;
-		}
-		else if ( iMin < iVersion && "" == iMax )
-		{
-			return true;
-		}
-		else if ( iMin < iVersion && iVersion < iMax )
-		{
-			return true;
-		}
-		return false;
-	}
-);*/
         };
          $(document).ready(function(){
               initializeTable();

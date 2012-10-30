@@ -8,6 +8,11 @@ act-ncss.xml
 build.xml
 
 #No need to version DataTables
-DataTables-1.9.3/
-!DataTable-1.9.3/media/js/jquery.dataTables.js
+DataTables-1.9.3/*
 
+ncss.xml
+
+test/*
+#!test/kevin/*
+#!test/foo.txt
+#!test/kevin/bar.txt
