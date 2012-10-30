@@ -1,2 +1,13 @@
+#ignore hidden files
+.*
+!/.gitignore
+
+#personal ignores
 ReadMe.txt
 act-ncss.xml
+build.xml
+
+#No need to version DataTables
+DataTables-1.9.3/
+!DataTable-1.9.3/media/js/jquery.dataTables.js
+

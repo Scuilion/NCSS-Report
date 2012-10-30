@@ -1,0 +1,23 @@
+.dataTables_processing{
+   visibility:visible;
+}
+
+thead tr th.Name, table td.Name {
+    width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+thead tr th.NCSS, table td.NCSS {
+    width: 10%;
+}
+thead tr th.CCN, table td.CCN {
+    width: 10%;
+}
+
+thead tr th.JavaDoc, table td.JavaDoc {
+    width: 30%;
+}
+.dataTables_wrapper{
+    width:90%
+}

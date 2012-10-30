@@ -3,22 +3,69 @@
       <title>NCSS Report</title>
       <meta charset="utf-8" />
       <script type="text/javascript" language="javascript" src="jquery.js"></script>
+      <script type="text/javascript" language="javascript" src="filtering.js"></script>
       <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.dataTables.js"></script>
       <style type="text/css" title="currentStyle">
-         @import "DataTables-1.9.3/media/css/demo_page.css"; @import "/media/css/header.ccss";
-         @import "DataTables-1.9.3/media/css/demo_table.css";
+         @import "NCSS_Report.css";
+         @import "DataTables-1.9.3/media/css/jquery.dataTables.css";
       </style>
       <script>
          var getNode = function(element, elementName){
             return element.find(elementName).text();
          };
+         var reDrawTable = function(aaData){
+            $('#report').dataTable().fnAddData(aaData);
+         };
+         var initializeTable = function(){
+            $('#ncss_report').html( '<table id="report" cellpadding="5" cellspacing="1" border="1" style="table-layout:fixed;"></table>' );
+            var oTable = $('#report').dataTable(
+                  {  "aaData":[],
+                     "aoColumns":[{"sTitle":"Name", "sClass":"Name","sType":"string", "sWidth":"70%"},
+                                    {"sTitle":"NCSS", "sClass":"NCSS","sType":"numeric","sWidth":"10%" },
+                                    {"sTitle":"CCN", "sClass":"CCN","sType":"numeric","sWidth":"10%"},
+                                    {"sTitle":"JavaDocs", "sClass":"JavaDocs","sType":"numeric","sWidth":"10%"},
+                                 ], 
+                     "bAutoWidth":true,
+                     "bRetrieve" : true,
+                     "bProcessing": true }
+                  );
+            /* Add event listeners to the two range filtering inputs */
+           $('#min').keyup( function() { oTable.fnDraw(); } );
+           $('#max').keyup( function() { oTable.fnDraw(); } );
+           addFiltering();
+/*$.fn.dataTableExt.afnFiltering.push(
+	function( oSettings, aData, iDataIndex ) {
+		var iMin = document.getElementById('min').value * 1;
+		var iMax = document.getElementById('max').value * 1;
+		var iVersion = aData[3] == "-" ? 0 : aData[3]*1;
+		if ( iMin == "" && iMax == "" )
+		{
+			return true;
+		}
+		else if ( iMin == "" && iVersion < iMax )
+		{
+			return true;
+		}
+		else if ( iMin < iVersion && "" == iMax )
+		{
+			return true;
+		}
+		else if ( iMin < iVersion && iVersion < iMax )
+		{
+			return true;
+		}
+		return false;
+	}
+);*/
+        };
          $(document).ready(function(){
-            $.ajax({
+              initializeTable();
+                        $.ajax({
               type: "GET",
               url: "act-ncss.xml",
               dataType: "xml",
               success: function(xml) {
-                  var aaData=[];
+                  var aaDataProper=[]
                   var allFunctions = $(xml).find('functions');
                   allFunctions.find('function').each(function(){
                      var row=[];
@@ -26,20 +73,9 @@
                      row.push(getNode($(this), 'ncss'));
                      row.push(getNode($(this), 'ccn'));
                      row.push(getNode($(this), 'javadocs'));
-                     aaData.push(row);
+                     aaDataProper.push(row);
                   });
-                  $('#ncss_report').html( '<table id="report" cellpadding="5" cellspacing="1" border="1" ></table>' );
-                  var oTable = $('#report').dataTable(
-                  {
-                     "aaData":aaData,
-                     "aoColumns":[{"sTitle":"Name"},
-                                    {"sTitle":"NCSS"},
-                                    {"sTitle":"CCN"},
-                                    {"sTitle":"JavaDocs"},
-                                 ], 
-                     
-                  }
-                  );
+                  reDrawTable(aaDataProper);
               }
             });
          });
@@ -47,6 +83,8 @@
       </script>
    </head>
 <body>
-   <div id="ncss_report"></div>	
+   <input name="min" id="min" type="text"><br>
+   <input name="max" id="max" type="text"><br>
+   <div id="ncss_report" style="width:80%"></div>	
 </body>
 </html>
