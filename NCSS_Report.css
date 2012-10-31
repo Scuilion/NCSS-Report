@@ -1,18 +1,22 @@
 .dataTables_processing{
    visibility:visible;
 }
-thead tr th.header{
+
+table{
+   width:80%;
+   table-layout:fixed;
 }
+
 thead tr th.Name, table td.Name {
     width: 50%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-thead tr th.NCSS, table td.NCSS {
+thead tr th.NCSS, table td.NCSS, 
+thead tr th.CCN, table td.CCN {
     width: 10%;
 }
-thead tr th.CCN, table td.CCN {
     width: 10%;
 }
 
@@ -32,4 +36,8 @@ thead tr th.JavaDoc, table td.JavaDoc {
    float:left;
     white-space: nowrap;
    overflow: hidden;
+}
+
+#report_filter{
+   height:25px
 }

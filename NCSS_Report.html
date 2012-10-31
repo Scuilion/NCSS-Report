@@ -22,7 +22,7 @@
                      "aoColumns":[{"sTitle":"Name", "sClass":"header Name","sType":"string", "sWidth":"70%"},
                                     {"sTitle":"<div>NCSS<div id='icon'></div>", "sClass":"header NCSS","sType":"numeric","sWidth":"10%" },
                                     {"sTitle":"<span>CCN</span><div id='icon'>", "sClass":"header CCN","sType":"numeric","sWidth":"10%"},
-                                    {"sTitle":"<span>JavaDoc</span>s<div id='icon'>", "sClass":"header JavaDocs","sType":"numeric","sWidth":"10%"},
+                                    {"sTitle":"<span>JavaDocs</span><div id='icon'>", "sClass":"header JavaDocs","sType":"numeric","sWidth":"10%"},
                                  ], 
                      "bAutoWidth":true,
                      "bRetrieve" : true,
@@ -32,11 +32,10 @@
             /* Add event listeners to the two range filtering inputs */
            $('#min').keyup( function() { oTable.fnDraw(); } );
            $('#max').keyup( function() { oTable.fnDraw(); } );
-           addFiltering();
         };
          $(document).ready(function(){
               initializeTable();
-                        $.ajax({
+               $.ajax({
               type: "GET",
               url: "act-ncss.xml",
               dataType: "xml",
@@ -52,6 +51,8 @@
                      aaDataProper.push(row);
                   });
                   reDrawTable(aaDataProper);
+                 addPopups();
+                 addFiltering();
               }
             });
          });
@@ -59,9 +60,12 @@
       </script>
    </head>
 <body>
-   <input name="min" id="min" type="text"><br>
-   <input name="max" id="max" type="text"><br>
-   <table id="report" cellpadding="5" cellspacing="1" border="1" style="width:80% table-layout:fixed;"></table>
+   <table id="report" cellpadding="5" cellspacing="1" border="1" ></table>
+
+   <div class="popup" style="display:none">
+      <input name="min" id="min" type="text"><br>
+      <input name="max" id="max" type="text"><br>
+   </div>
 
 </body>
 </html>

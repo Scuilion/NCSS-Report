@@ -24,4 +24,23 @@ var addFiltering = function(){
 	}
    ) };
 
+var addPopups = function(){
+   $("th[class*='NCSS']").append(
+       "<div class='popup' style='display:none; z-index:100' >"+
+            "<input name='min' id='min' type='text'><br>"+
+            "<input name='max' id='max' type='text'><br>"+
+         "</div>"
+   );
+   $("#icon").live('click', function(){
+      $(".popup").slideFadeToggle(function(){
+         
+      });
+      
+   }); 
+
+};
+
+$.fn.slideFadeToggle = function(easing, callback) {
+    return this.animate({ opacity: 'toggle', height: 'toggle' }, "fast", easing, callback);
+};
 
