@@ -4,6 +4,7 @@
       <meta charset="utf-8" />
       <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.js"></script>
       <script type="text/javascript" language="javascript" src="filtering.js"></script>
+      <script type="text/javascript" language="javascript" src="temp.js"></script>
       <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.dataTables.js"></script>
       <style type="text/css" title="currentStyle">
          @import "NCSS_Report.css";
@@ -16,16 +17,58 @@
          var reDrawTable = function(aaData){
             $('#report').dataTable().fnAddData(aaData);
          };
+         var df_progressXX = function(source, type, val) {
+               //var progreePercentageValue =Math.floor( obj.aData[ obj.iDataColumn ] );
+               //var startStr = '<div class="progress"><div class="bar" style="width:';
+               //var midStr = '%;"></div><div class="progressText">' ;
+               //var endStr = '%</div></div>';
+               //var sReturn = startStr + progreePercentageValue + midStr + progreePercentageValue + endStr;
+               //return sReturn;
+ 	 };
+         var df_progress = function (data, type, full){
+            if( type === 'display'){
+               var progreePercentageValue =Math.floor(data);
+               var startStr = '<div class="progress"><div class="bar" style="width:';
+               var midStr = '%;"></div><div class="progressText">' ;
+               var endStr = '%</div></div>';
+               var sReturn = startStr + progreePercentageValue + midStr + progreePercentageValue + endStr;
+               return sReturn;
+            }//else if ( type === 'sort'){
+               return data;
+         };
          var initializeTable = function(){
             var oTable = $('#report').dataTable(
                   {  "aaData":[],
-                     "aoColumns":[{"sTitle":"Name", "sClass":"header Name","sType":"string", "sWidth":"70%"},
-                                    {"sTitle":"<div>NCSS<div id='icon'></div>", "sClass":"header NCSS","sType":"numeric","sWidth":"10%" },
-                                    {"sTitle":"<span>CCN</span><div id='icon'>", "sClass":"header CCN","sType":"numeric","sWidth":"10%"},
-                                    {"sTitle":"<span>JavaDocs</span><div id='icon'>", "sClass":"header JavaDocs","sType":"numeric","sWidth":"10%"},
+                     "aoColumns":[  {
+                                    "sTitle":"Name", 
+                                    "sClass":"header Name",
+                                    "sType":"string",
+                                    "sWidth":"70%"
+                                    },
+                                    {
+                                    "sTitle":"<div>NCSS<div id='icon'></div>",
+                                    "sClass":"header NCSS",
+                                    "sType":"numeric",
+                                    "sWidth":"10%",
+                                    },
+                                    {
+                                    "sTitle":"<span>CCN</span><div id='icon'>",
+                                    "sClass":"header CCN",
+                                    "sType":"numeric",
+                                    "mRender":df_progress,
+                                    "sWidth":"10%"
+                                    },
+                                    {
+                                    "sTitle":"<span>JavaDocs</span><div id='icon'>",
+                                    "sClass":"header JavaDocs",
+                                    "sType":"numeric",
+                                    "sWidth":"10%"
+                                    }
                                  ], 
+                     "bPaginate" : true,
                      "bAutoWidth":true,
                      "bRetrieve" : true,
+                     "sScrollY": "100%",
                      "bProcessing": true }
                   );
 
@@ -36,36 +79,39 @@
          $(document).ready(function(){
               initializeTable();
                $.ajax({
-              type: "GET",
-              url: "act-ncss.xml",
-              dataType: "xml",
-              success: function(xml) {
-                  var aaDataProper=[]
-                  var allFunctions = $(xml).find('functions');
-                  allFunctions.find('function').each(function(){
-                     var row=[];
-                     row.push(getNode($(this), 'name'));
-                     row.push(getNode($(this), 'ncss'));
-                     row.push(getNode($(this), 'ccn'));
-                     row.push(getNode($(this), 'javadocs'));
-                     aaDataProper.push(row);
-                  });
-                  reDrawTable(aaDataProper);
-                 addPopups();
-                 addFiltering();
-              }
+                 type: "GET",
+                 url: "ncss.xml",
+                 dataType: "xml",
+                 success: function(xml) {
+                     var aaDataProper=[]
+                     var allFunctions = $(xml).find('functions');
+                     allFunctions.find('function').each(function(){
+                        var row=[];
+                        row.push(getNode($(this), 'name'));
+                        row.push(getNode($(this), 'ncss'));
+                        row.push(getNode($(this), 'ccn'));
+                        row.push(getNode($(this), 'javadocs'));
+                        aaDataProper.push(row);
+                     });
+                     aaDataProper = temp;
+                     reDrawTable(aaDataProper);
+                     //addPopups();
+                     //addFiltering();
+                 }
             });
+            
          });
          
       </script>
    </head>
 <body>
+
    <table id="report" cellpadding="5" cellspacing="1" border="1" ></table>
 
-   <div class="popup" style="display:none">
+   <!--div class="popup" style="display:none">
       <input name="min" id="min" type="text"><br>
       <input name="max" id="max" type="text"><br>
-   </div>
+   </div-->
 
 </body>
 </html>
