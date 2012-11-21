@@ -2,14 +2,18 @@
    <head>
       <title>NCSS Report</title>
       <meta charset="utf-8" />
-      <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.js"></script>
+      <meta http-equiv="Access-Control-Allow-Origin" content="*">
+      <script type="text/javascript" language="javascript" src="jquery/jquery-1.7.2.js"></script>
+      <script type="text/javascript" language="javascript" src="jqueryUI/jquery-ui.min.js"></script>
       <script type="text/javascript" language="javascript" src="filtering.js"></script>
-      <script type="text/javascript" language="javascript" src="temp.js"></script>
-      <script type="text/javascript" language="javascript" src="DataTables-1.9.3/media/js/jquery.dataTables.js"></script>
+      <script type="text/javascript" language="javascript" src="resize.js"></script>
+      <script type="text/javascript" language="javascript" src="DataTables-1.9.4/media/js/jquery.dataTables.js"></script>
+      <script type="text/javascript" language="javascript" src="DataTables-1.9.4/extras/FixedColumns/media/js/FixedColumns.js"></script>
       <style type="text/css" title="currentStyle">
          @import "NCSS_Report.css";
          @import "DataTables-1.9.3/media/css/jquery.dataTables.css";
       </style>
+
       <script>
          var getNode = function(element, elementName){
             return element.find(elementName).text();
@@ -17,61 +21,71 @@
          var reDrawTable = function(aaData){
             $('#report').dataTable().fnAddData(aaData);
          };
-         var df_progressXX = function(source, type, val) {
-               //var progreePercentageValue =Math.floor( obj.aData[ obj.iDataColumn ] );
-               //var startStr = '<div class="progress"><div class="bar" style="width:';
-               //var midStr = '%;"></div><div class="progressText">' ;
-               //var endStr = '%</div></div>';
-               //var sReturn = startStr + progreePercentageValue + midStr + progreePercentageValue + endStr;
-               //return sReturn;
- 	 };
-         var df_progress = function (data, type, full){
-            if( type === 'display'){
-               var progreePercentageValue =Math.floor(data);
-               var startStr = '<div class="progress"><div class="bar" style="width:';
-               var midStr = '%;"></div><div class="progressText">' ;
-               var endStr = '%</div></div>';
-               var sReturn = startStr + progreePercentageValue + midStr + progreePercentageValue + endStr;
-               return sReturn;
-            }//else if ( type === 'sort'){
-               return data;
+         var df_longString =function(data, type, full){
+            return '<div class="df_longString" title="' + data + '">' + data + '</div>';
          };
+         //var buttonClicked = function(){
+         //Come back here:
+         //   var parentElement = $(".df_longString").parent();
+         //   var tdwidth = parentElement.outerWidth() - parentElement.offset().left;
+         //   $(".df_longString").each(function()
+         //   {
+         //      $(this).css('width',tdwidth + 'px');
+         //   });
+         //};
+         aoColumns = [  {
+                     "sTitle":"Name", 
+                     "sClass":"header Name",
+                     "sType":"string",
+                     "mRender":df_longString 
+                     },
+                     {
+                     "sTitle":"<div>NCSS<div id='icon'></div>",
+                     "sClass":"header NCSS",
+                     "sType":"numeric",
+                     },
+                     {
+                     "sTitle":"<span>CCN</span><div id='icon'>",
+                     "sClass":"header CCN",
+                     "sType":"numeric",
+                     },
+                     {
+                     "sTitle":"<span>JavaDocs</span><div id='icon'>",
+                     "sClass":"header JavaDocs",
+                     "sType":"numeric",
+                     }
+                  ];
+
+         var determineParameters = function(){
+            var howManyFixedColumns = 2;
+            var oneWidth = $("Name")
+            oneWidth += $("header");
+         };
+
          var initializeTable = function(){
             var oTable = $('#report').dataTable(
                   {  "aaData":[],
-                     "aoColumns":[  {
-                                    "sTitle":"Name", 
-                                    "sClass":"header Name",
-                                    "sType":"string",
-                                    "sWidth":"70%"
-                                    },
-                                    {
-                                    "sTitle":"<div>NCSS<div id='icon'></div>",
-                                    "sClass":"header NCSS",
-                                    "sType":"numeric",
-                                    "sWidth":"10%",
-                                    },
-                                    {
-                                    "sTitle":"<span>CCN</span><div id='icon'>",
-                                    "sClass":"header CCN",
-                                    "sType":"numeric",
-                                    "mRender":df_progress,
-                                    "sWidth":"10%"
-                                    },
-                                    {
-                                    "sTitle":"<span>JavaDocs</span><div id='icon'>",
-                                    "sClass":"header JavaDocs",
-                                    "sType":"numeric",
-                                    "sWidth":"10%"
-                                    }
-                                 ], 
-                     "bPaginate" : true,
-                     "bAutoWidth":true,
-                     "bRetrieve" : true,
-                     "sScrollY": "100%",
-                     "bProcessing": true }
-                  );
+                     "aoColumns":aoColumns, 
 
+                     //"sScrollY":"300px", //height of table. should be less than the table height.
+                     //"sScrollX":"150%", //adds the horizontal scroll bar
+                     //"sScrollXInner":"1200px", //used for 'oversizing' the table
+                     //"bScrollCollapse":true,//collapse the table height when filtering.
+                     "bPaginated":false,//obvious
+                     //"bAutoWidth":true,
+                     //"bRetrieve" : true,
+                     "bScrollInfinite" : true,
+                     //"sScrollY": "200px",
+                     //"bProcessing": true 
+                     }
+                  );
+            //new FixedColumns(oTable, {
+               //"iLeftColumns":1,
+               //"sLeftWidth": "relative",
+               //"iLeftWidth": 50, // percentage
+               //
+            //});
+            makeResizable(oTable);
             /* Add event listeners to the two range filtering inputs */
            $('#min').keyup( function() { oTable.fnDraw(); } );
            $('#max').keyup( function() { oTable.fnDraw(); } );
@@ -93,25 +107,35 @@
                         row.push(getNode($(this), 'javadocs'));
                         aaDataProper.push(row);
                      });
-                     aaDataProper = temp;
                      reDrawTable(aaDataProper);
                      //addPopups();
                      //addFiltering();
                  }
             });
-            
+		$(".resizabletable").each(function(index) 
+		{
+			makeResizable($(this));
+		});
          });
          
       </script>
    </head>
 <body>
-
-   <table id="report" cellpadding="5" cellspacing="1" border="1" ></table>
+   <!--button title="thebutton" style="width:50px;height:20px;" onclick="buttonClicked()"></button-->
+   <table id="report" cellpadding="5" cellspacing="1" border="1" width="100%"></table>
 
    <!--div class="popup" style="display:none">
       <input name="min" id="min" type="text"><br>
       <input name="max" id="max" type="text"><br>
    </div-->
-
+   <div>
+      <table id="mytable2" class="resizabletable" style="width:100%; border: 1px solid red;" border="0" cellspacing="0" cellpadding="0" >
+           <thead> <tr> <th style="">Dit is een  zin!</th> <th style="">b</th> <th style="">b</th> <th style="">b</th> </tr> </thead>
+           <tbody> <tr> <td style="">Dit is een  zin!</td> <td style="">b</td> <td style="">b</td> <td style="">b</td> </tr>
+                   <tr> <td style="">b</td> <td style="">a</td> <td style="">b</td> <td style="">b</td> </tr>
+                   <tr> <td style="">b</td> <td style="">a</td> <td style="">b</td> <td style="">b</td> </tr>
+           </tbody>
+           </table>
+   </div>
 </body>
 </html>

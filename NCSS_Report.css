@@ -2,33 +2,49 @@
    visibility:visible;
 }
 
-table{
-   width:80%;
-   table-layout:fixed;
+#report{
 }
 
 thead tr th.Name, table td.Name {
     width: 50%;
-    white-space: nowrap;
+/*    white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: ellipsis;*/
 }
 thead tr th.NCSS, table td.NCSS, 
 thead tr th.CCN, table td.CCN {
-    width: 10%;
-}
     width: 10%;
 }
 
 thead tr th.JavaDoc, table td.JavaDoc {
     width: 30%;
 }
+
+.draghandle {
+   border:2px solid;
+   position: absolute; 
+   z-index:5; 
+   width:5px;
+   height:20px;
+   cursor:e-resize;
+}
+
 .dataTables_wrapper{
-    width:90%
+    width:90%;
+    height:90%;
+}
+
+.df_longString{
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   width:99%;
+   /*padding-left:0px;
+   padding-right:0px;*/
 }
 
 #icon{
-   background:url('DataTables-1.9.3/examples/examples_support/themes/ui-lightness/images/ui-icons_228ef1_256x240.png') no-repeat right center; 
+   background:url('DataTables-1.9.4/examples/examples_support/themes/ui-lightness/images/ui-icons_228ef1_256x240.png') no-repeat right center; 
    width:15px; 
    height:15px; 
    display:block;
