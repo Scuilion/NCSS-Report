@@ -7,16 +7,18 @@
 
 thead tr th.Name, table td.Name {
     width: 50%;
-/*    white-space: nowrap;
-    overflow: hidden;
+    white-space: nowrap;
+/*   overflow: hidden;
     text-overflow: ellipsis;*/
 }
 thead tr th.NCSS, table td.NCSS, 
 thead tr th.CCN, table td.CCN {
+    white-space: nowrap;
     width: 10%;
 }
 
 thead tr th.JavaDoc, table td.JavaDoc {
+    white-space: nowrap;
     width: 30%;
 }
 
