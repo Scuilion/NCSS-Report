@@ -6,7 +6,7 @@
 }
 
 thead tr th.Name, table td.Name {
-    width: 50%;
+    width: 20%;
     white-space: nowrap;
 /*   overflow: hidden;
     text-overflow: ellipsis;*/
@@ -19,7 +19,8 @@ thead tr th.CCN, table td.CCN {
 
 thead tr th.JavaDoc, table td.JavaDoc {
     white-space: nowrap;
-    width: 30%;
+    //width: 30%;
+    width: 60%;
 }
 
 .draghandle {

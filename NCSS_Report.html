@@ -20,12 +20,13 @@
          var reDrawTable = function(aaData){
             tableStartTime = (new Date).getTime();
             $('#report').dataTable().fnAddData(aaData);
+            resetSliderPositions($('#report'));
             tableStopTime = (new Date).getTime();
             $('#tableLoadTime').text(tableStopTime - tableStartTime);
          };
          var df_longString =function(data, type, full){
-            //return '<div class="df_longString" title="' + data + '">' + data + '</div>';
-            return data;
+            return '<div class="df_longString" title="' + data + '">' + data + '</div>';
+            //return data;
          };
          //var buttonClicked = function(){
          //Come back here:
@@ -74,15 +75,18 @@
                      //"sScrollX":"150%", //adds the horizontal scroll bar
                      //"sScrollXInner":"1200px", //used for 'oversizing' the table
                      //"bScrollCollapse":true,//collapse the table height when filtering.
-                     "bAutoWidth":false,
+                     "bAutoWidth":false,//can't have resize and autowidth
                      "bPaginated":false,//obvious
                      //"bAutoWidth":true,
                      //"bRetrieve" : true,
                      "bScrollInfinite" : true,
                      //"sScrollY": "200px",
                      //"bProcessing": true 
+                     "fnDrawCallback":function(){
+                        resetSliderPositions($('#report'));
                      }
-                  );
+                  }
+               );
             //new FixedColumns(oTable, {
                //"iLeftColumns":1,
                //"sLeftWidth": "relative",
@@ -99,7 +103,7 @@
               fileParseStartTime = (new Date).getTime();
                $.ajax({
                  type: "GET",
-                 url: "ncss-eg.xml",
+                 url: "ncss.xml",
                  dataType: "xml",
                  success: function(xml) {
                      var aaDataProper=[]
@@ -119,9 +123,6 @@
                      //addFiltering();
                  }
             });
-		$(".resizabletable").each(function(index) {
-			makeResizable($(this));
-		});
          });
          
       </script>

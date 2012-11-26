@@ -3,6 +3,7 @@ var makeResizable = function(oTable){
    var tableId = oTable.attr('id'); 
 
    for (var i=0; i<=numberOfColumns; i++) {
+      //ignore first and last column
       if ( i == 0 || i == numberOfColumns) continue;
       //enjoy this nice chain :)
       $('<div class="draghandle" id="'+tableId+'_id'+i+'"></div>').insertBefore(oTable).data('tableid', tableId).data('myindex',i).draggable(
@@ -29,12 +30,13 @@ var makeResizable = function(oTable){
 };
 function resetSliderPositions(table) {
    var tableId = table.attr('id'); 
-   //put all sliders on the correct position
+
+   var runningColumnWidth=0;
    table.find(' TR:first TH').each(function(index)
    { 
          var td = $(this);
-         var newSliderPosition = td.offset().left+td.outerWidth() ;
-         $("#"+tableId+"_id"+(index+1)).css({  left:   newSliderPosition , height: table.height() + 'px'}  );
+         runningColumnWidth += td.outerWidth(); 
+         $("#"+tableId+"_id"+(index+1)).css({  left:   runningColumnWidth , height: table.height() + 'px'}  );
    });
 }
 
